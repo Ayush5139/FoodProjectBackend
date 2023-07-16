@@ -4,7 +4,7 @@ const { signUp, print, logIn, addRecipe, getReview, addReview, addQuestion, getQ
 const route = require("express").Router()
 
 route.post("/signup",signUp)
-route.post("/login",verify,logIn)
+route.post("/login",logIn)
 route.post("/addnewrecipe",addRecipe)
 route.post("/addreview",addReview)
 route.get("/getreview/:title",getReview)
