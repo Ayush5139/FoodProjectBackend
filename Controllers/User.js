@@ -48,7 +48,7 @@ async function logIn(req, res) {
     const validate = bcrpyt.compareSync(loginData.data.password, response[0].password)
     console.log(validate)
     if (validate == true) {
-        const token = jwt.sign(loginData, secretkey)
+        const token = jwt.sign(loginData, secretkey,{expiresIn:"2h"})
         let resp1 = {
             "msg": "User has logged in successfully",
             "token": token,
