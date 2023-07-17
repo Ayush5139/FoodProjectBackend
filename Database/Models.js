@@ -88,6 +88,13 @@ const saverecipeSchema = new Schema({
 
 const saverecipeModel = mongoose.model('saved recipes',saverecipeSchema)
 
-module.exports = { mainModel, addMain , signupModel,recipeModel,reviewModel,qustionModel,saverecipeModel}
+const replySchema = new Schema({
+    reviewid:Schema.ObjectId,
+    name:String,
+    reply:String
+})
+
+const replyModel = mongoose.model("replies",replySchema)
+module.exports = { mainModel, addMain , signupModel,recipeModel,reviewModel,qustionModel,saverecipeModel,replyModel}
 
 

@@ -4,7 +4,7 @@ const bcrpyt = require("bcrypt")
 const saltrounds = 10
 const secretkey = "ecommercesecret"
 const jwt = require("jsonwebtoken")
-const { signupModel, recipeModel, reviewModel, qustionModel, saverecipeModel } = require("../Database/Models")
+const { signupModel, recipeModel, reviewModel, qustionModel, saverecipeModel, replyModel } = require("../Database/Models")
 
 
 async function signUp(req, res) {
@@ -48,7 +48,7 @@ async function logIn(req, res) {
     const validate = bcrpyt.compareSync(loginData.data.password, response[0].password)
     console.log(validate)
     if (validate == true) {
-        const token = jwt.sign(loginData, secretkey,{expiresIn:"2h"})
+        const token = jwt.sign(loginData, secretkey, { expiresIn: "2h" })
         let resp1 = {
             "msg": "User has logged in successfully",
             "token": token,
@@ -80,7 +80,7 @@ async function addReview(req, res) {
     console.log("final data", review, username, title)
     const newObj = {
         RecipeId: title,
-        RecipeName:ecipename,
+        RecipeName: ecipename,
         UserName: username,
         Review: review
     }
@@ -141,29 +141,62 @@ async function saveRecipe(req, res) {
     res.send("recipeadded")
 }
 
-async function getSavedRecipes(req,res){
+async function getSavedRecipes(req, res) {
     const userid = req.params.id
     console.log(userid)
-    const response = await saverecipeModel.find({userid:userid})
+    const response = await saverecipeModel.find({ userid: userid })
     res.send(response)
 }
 
-async function getAllReciews(req,res){
+async function getAllReciews(req, res) {
     const response = await reviewModel.find()
     res.send(response)
 }
 
-async function getUserDetails(req,res){
+async function getUserDetails(req, res) {
     const userid = req.params.userid
     console.log(userid)
-    const response = await signupModel.find({_id:userid})
+    const response = await signupModel.find({ _id: userid })
     const email = response[0].email
     const username = email.split("@")[0]
     res.send(username)
 }
 
+async function getReviewById(req, res) {
+    const data = req.params.reviewid
+    console.log(data)
+    try {
+        const response = await reviewModel.find({ _id: data })
+        res.send(response)
+    }
+    catch (err) {
+        console.log(err)
+    }
+}
 
+async function addReplies(req, res) {
+    const data = req.body.data
+    console.log(data)
+    const userID = req.body.data.currentUserID
+    const response = await signupModel.find({ _id: userID })
+    const email = response[0].email
+    const Name = email.split("@")[0]
+    console.log(Name)
+    const newObj = {
+        reviewid: req.body.data.currentReviewID,
+        name: Name,
+        reply: req.body.data.currentReply
+    }
+    await replyModel.insertMany(newObj)
+    res.send("reply received")
+}
 
+async function getReplies(req,res){
+    const data = req.params.reviewid
+    console.log(data)
+    const response = await replyModel.find({reviewid:data})
+    res.send(response)
+}
 
-module.exports = { signUp, logIn, verify, addReview, addRecipe, getReview, addQuestion, getQues, saveRecipe, getSavedRecipes, getAllReciews,getUserDetails}
+module.exports = { signUp, logIn, verify, addReview, addRecipe, getReview, addQuestion, getQues, saveRecipe, getSavedRecipes, getAllReciews, getUserDetails, getReviewById, addReplies,getReplies }
 
