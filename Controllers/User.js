@@ -108,7 +108,7 @@ async function addQuestion(req, res) {
     const newObj = {
         RecipeId: title,
         UserName: username,
-        Question: review
+        Review: review
     }
     console.log("final obj", newObj)
     await qustionModel.insertMany(newObj)
@@ -191,12 +191,35 @@ async function addReplies(req, res) {
     res.send("reply received")
 }
 
-async function getReplies(req,res){
+async function getReplies(req, res) {
     const data = req.params.reviewid
     console.log(data)
-    const response = await replyModel.find({reviewid:data})
+    const response = await replyModel.find({ reviewid: data })
     res.send(response)
 }
 
-module.exports = { signUp, logIn, verify, addReview, addRecipe, getReview, addQuestion, getQues, saveRecipe, getSavedRecipes, getAllReciews, getUserDetails, getReviewById, addReplies,getReplies }
+async function getUserReiews(req, res) {
+    const data = req.params.username
+    console.log(data)
+    try {
+        const response = await reviewModel.find({UserName: data })
+        res.send(response)
+    }
+    catch (err) {
+        console.log(err)
+    }
+}
+async function getUserQuestions(req, res) {
+    const data = req.params.username
+    console.log(data)
+    try {
+        const response = await qustionModel.find({UserName: data })
+        res.send(response)
+    }
+    catch (err) {
+        console.log(err)
+    }
+}
+
+module.exports = { signUp, logIn, verify, addReview, addRecipe, getReview, addQuestion, getQues, saveRecipe, getSavedRecipes, getAllReciews, getUserDetails, getReviewById, addReplies, getReplies,getUserReiews,getUserQuestions }
 

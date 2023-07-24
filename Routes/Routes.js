@@ -1,5 +1,5 @@
 
-const { signUp, print, logIn, addRecipe, getReview, addReview, addQuestion, getQues, saveRecipe, getSavedRecipes, getAllReciews, getUserDetails, verify, getReviewById, addReplies, getReplies } = require("../Controllers/User")
+const { signUp, print, logIn, addRecipe, getReview, addReview, addQuestion, getQues, saveRecipe, getSavedRecipes, getAllReciews, getUserDetails, verify, getReviewById, addReplies, getReplies, getUserReiews, getUserQuestions } = require("../Controllers/User")
 
 const route = require("express").Router()
 
@@ -17,5 +17,7 @@ route.get("/getuserdetails/:userid",getUserDetails)
 route.get("/getonreview/:reviewid",getReviewById)
 route.post("/postreplies",addReplies)
 route.get("/getreplies/:reviewid",getReplies)
+route.get("/getuserrviews/:username",getUserReiews)
+route.get("/getuserques/:username",getUserQuestions)
 
 module.exports={route}

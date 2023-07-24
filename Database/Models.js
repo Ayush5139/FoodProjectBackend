@@ -73,7 +73,7 @@ const reviewModel = mongoose.model('reviews',reviewSchema)
 const questionSchema = new Schema({
     RecipeId:String,
     UserName: String,
-    Question: String
+    Review: String
 })
 
 const qustionModel = mongoose.model('questions',questionSchema)
